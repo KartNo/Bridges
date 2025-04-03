@@ -2,7 +2,7 @@
 
 
 Leader: Nicolas Urruchi
-Rajnoor Brar
+,Rajnoor Brar
 
 
 Project: Spreading of Fire
