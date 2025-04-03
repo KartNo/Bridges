@@ -45,6 +45,17 @@ struct SpreadingFire : public NonBlockingGame {
     // TODO:
     // Set up the initial board by adding fire or trees to the map
     // in a pattern on the map
+	  srand(time(0));
+	  for (int i = o;i < gridRows; i++){
+		  for (int j = 0; j < gridcols; j++){
+			  if (rand() % 100 < 95){
+				  treeMap[i][j] = Tree; // 95% chance of tree
+			  }else{
+				  treeMap[i][j] = EMPTY; //5% empty space
+			  }
+		  }
+	  }
+	  treeMap[gridRows / 2][gridCols / 2] = FIRE; // fire in center
   }
 
   virtual void gameLoop() override {
@@ -53,6 +64,14 @@ struct SpreadingFire : public NonBlockingGame {
     // the cell currently is.
     // Fire should have a random chance to burn out and turn into an empty cell
     // Trees should turn into fire if they are adjacent to a fire cell
+	  int newTreeMap[30][30];
+	  for (int i = 0; i <gridRows; i++){
+		  for(int j = 0; j < gridCols; j++){
+			  if(treeMap[i][j] == FIRE){
+				  if(rand()% 100 < 15) { //15% chance fire
+					  newTreeMap[i][j] = EMPTY;
+				  } else {
+					  newTreeMap[i][j] = FIRE;
   }
 };
 
