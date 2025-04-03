@@ -46,10 +46,10 @@ struct SpreadingFire : public NonBlockingGame {
     // Set up the initial board by adding fire or trees to the map
     // in a pattern on the map
 	  srand(time(0));
-	  for (int i = o;i < gridRows; i++){
+	  for (int i = 0;i < gridRows; i++){
 		  for (int j = 0; j < gridcols; j++){
 			  if (rand() % 100 < 95){
-				  treeMap[i][j] = Tree; // 95% chance of tree
+				  treeMap[i][j] = TREE; // 95% chance of tree
 			  }else{
 				  treeMap[i][j] = EMPTY; //5% empty space
 			  }
