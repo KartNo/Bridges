@@ -77,7 +77,8 @@ void print(Status &s, int arr[25][25], int row, int col) {
 				}
 			}
 			if (s.get_status() == BURN) s.set_status(3);
-			cout << s.print_status() << " ";
+			s.print_status();
+			cout << " ";
 		}
 		cout << endl;
 	}
@@ -86,18 +87,15 @@ void print(Status &s, int arr[25][25], int row, int col) {
 int main() {
 	srand(time(0));
 
-	int row = 0;
-	int col = 0;
-
 	cout << "How big do you want the map to be? (Max: 25)" << endl;
 	cout << "Rows: ";
-	cin >> row;
+	cin >> const int row;
 
 	if (!row) die();
 	if (row < 0 || row > 25) die();
 
 	cout << "Columns: ";
-	cin >> col;
+	cin >> const int col;
 
 	if (!col) die();
 	if (col < 0 || col > 25) die();
@@ -115,7 +113,7 @@ int main() {
 	else if (choice == 2) difficulty = choice;
 	else difficulty = choice;
 
-	int map[row][col] = {0};
+	int tree_map[row][col] = {0};
 
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < col; j++) {
