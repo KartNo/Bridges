@@ -40,10 +40,10 @@ struct SpreadingFire : public NonBlockingGame {
 			setDescription("Simulate the spread of fire. Probability of fire spreading 15%. Forest Density 95. Press the arrow keys to try different types of forests");
 		}
 
-	bool burn() {	//chance of tree catching fire
+	bool burn() {	//Chance of tree catching fire
 		int luck = rand() % 100;
-		if (luck < 15) return false;
-		else return true;
+		if (luck < 15) return true;
+		else return false;
 	}
 
 	virtual void initialize() override {
@@ -70,10 +70,40 @@ struct SpreadingFire : public NonBlockingGame {
 		// Fire should have a random chance to burn out and turn into an empty cell
 		// Trees should turn into fire if they are adjacent to a fire cell
 		int newTreeMap[30][30];
-		for (int i = 0; i <gridRows; i++){
+		for (int i = 0; i < gridRows; i++){
 			for(int j = 0; j < gridCols; j++){
 				if(treeMap[i][j] == FIRE){
+					// Checks if the trees surrounding FIRE catch on fire
+					bool above = burn();
+					bool below = burn();
+					bool left = burn();
+					bool right = burn();
 
+					if (above) {
+						if (i != 0 && treeMap[i - 1][j] == TREE) {
+							treeMap[i - 1][j] = FIRE;
+						}
+					}
+
+					if (below) {
+						if  (i != gridRows - 1 && treeMap[i + 1][j] == TREE) {
+							treeMap[i + 1][j] = FIRE;
+						}
+					}
+					
+					if (left) {
+						if  (j != 0 && treeMap[i][j - 1]) {
+							treeMap[i][j - 1] = FIRE;
+						}
+					}
+					
+					if (right) {
+						if  (j != gridCols - 1 && treeMap[i][j + 1]) {
+							treeMap[i][j + 1] = FIRE;
+						}
+					}
+					// Turns the original FIRE to EMPTY
+					treeMap[i][j] = EMPTY;
 				}
 			}
 		}
