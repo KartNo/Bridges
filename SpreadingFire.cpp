@@ -52,7 +52,7 @@ struct SpreadingFire : public NonBlockingGame {
 		// in a pattern on the map
 		srand(time(0));
 		for (int i = 0;i < gridRows; i++){
-			for (int j = 0; j < gridcols; j++){
+			for (int j = 0; j < gridCols; j++){
 				if (rand() % 100 < 95){
 					treeMap[i][j] = TREE; // 95% chance of tree
 				}else{
