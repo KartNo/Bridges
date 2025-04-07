@@ -107,7 +107,19 @@ struct SpreadingFire : public NonBlockingGame {
 				}
 			}
 		}
+
+	for (int i = 0; i < gridRows; i++){
+		for (int j = 0; j < gridCols; j++){
+			if (treeMap[i][j] == TREE){
+				setBGColor(i,j,treeColor);// sets bg to green
+				drawSymbol(i,j, fireSymbol, NamedColor::black);
+			} else{
+				setBGColor(i,j, emptyColor);// bg to red
+				drawSymbol(i,j, emptySymbol, NamedColor::black);
+			}
+		}
 	}
+}
 };
 
 int main(int argc, char** argv) {
