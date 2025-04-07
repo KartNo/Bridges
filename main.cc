@@ -152,13 +152,15 @@ int main() {
 	copy(copy_map, tree_map);
 
 	spread(tree_map);
+	print(tree_map);
 
 	while (!same(copy_map, tree_map)) {
-//		clearscreen();
+		clearscreen();
 		copy(copy_map, tree_map);
 		oof(tree_map);
 		spread(tree_map);
 		print(tree_map);
+		cout << endl;
 		usleep(500000);
 	}
 }

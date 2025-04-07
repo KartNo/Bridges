@@ -9,7 +9,8 @@
 #include <NonBlockingGame.h>
 #include <iostream>
 #include <time.h>
-#include <vector>
+#include <cstdlib>
+#include <ctime>
 
 using namespace bridges::game;
 using namespace std;
@@ -21,6 +22,7 @@ struct SpreadingFire : public NonBlockingGame {
 
 	// Map of cells containing either fire, a tree, or nothing
 	int treeMap[30][30];
+	int newTreeMap[30][30];
 
 	int FIRE = 2;
 	int TREE = 1;
@@ -45,17 +47,71 @@ struct SpreadingFire : public NonBlockingGame {
 		if (luck < 15) return true;
 		else return false;
 	}
+	void spread(int arr[gridRows][gridCols], int i, int j) {
+			// Checks if the trees surrounding FIRE catch on fire
+			bool above = burn();
+			bool below = burn();
+			bool left = burn();
+			bool right = burn();
+
+			if (above) {
+				if (i != 0 && treeMap[i - 1][j] == TREE) {
+					treeMap[i - 1][j] = FIRE;
+				}
+			}
+
+			if (below) {
+				if  (i != gridRows - 1 && treeMap[i + 1][j] == TREE) {
+					treeMap[i + 1][j] = FIRE;
+				}
+			}
+
+			if (left) {
+				if  (j != 0 && treeMap[i][j - 1]) {
+					treeMap[i][j - 1] = FIRE;
+				}
+			}
+
+			if (right) {
+				if  (j != gridCols - 1 && treeMap[i][j + 1]) {
+					treeMap[i][j + 1] = FIRE;
+				}
+			}
+		}
+	}
+
+	void dead(int arr[gridRows][gridCols], int i, int j) {
+		// Turns the original FIRE to EMPTY
+		arr[i][j] = EMPTY;
+	}
+
+	void copy(int copy[gridRows][gridCols], int tree[gridRows][gridCols]) {
+		for (int a = 0; a < gridRows; a++) {
+			for (int b = 0; b < gridCols; b++) {
+				copy[a][b] = tree[a][b];
+			}
+		}
+	}
+
+	bool same(int arr[gridRows][gridCols], int tree[gridRows][gridCols]) {
+		for (int f = 0; f < gridRows; f++) {
+			for (int g = 0; g < gridCols; g++) {
+				if (arr[f][g] != tree[f][g]) return false;
+			}
+		}
+		return true;
+	}
 
 	virtual void initialize() override {
 		// TODO:
 		// Set up the initial board by adding fire or trees to the map
 		// in a pattern on the map
 		srand(time(0));
-		for (int i = 0;i < gridRows; i++){
-			for (int j = 0; j < gridcols; j++){
+		for (int r = 0; r < gridRows; r++){
+			for (int s = 0; s < gridcols; s++){
 				if (rand() % 100 < 95){
 					treeMap[i][j] = TREE; // 95% chance of tree
-				}else{
+				} else {
 					treeMap[i][j] = EMPTY; //5% empty space
 				}
 			}
@@ -69,57 +125,33 @@ struct SpreadingFire : public NonBlockingGame {
 		// the cell currently is.
 		// Fire should have a random chance to burn out and turn into an empty cell
 		// Trees should turn into fire if they are adjacent to a fire cell
-		int newTreeMap[30][30];
-		for (int i = 0; i < gridRows; i++){
-			for(int j = 0; j < gridCols; j++){
-				if(treeMap[i][j] == FIRE){
-					// Checks if the trees surrounding FIRE catch on fire
-					bool above = burn();
-					bool below = burn();
-					bool left = burn();
-					bool right = burn();
+		copy(newTreeMap, treeMap);
+		spread(treeMap, gridRows / 2, gridCols / 2);
 
-					if (above) {
-						if (i != 0 && treeMap[i - 1][j] == TREE) {
-							treeMap[i - 1][j] = FIRE;
-						}
+		while(!same(newTreeMap, treeMap)) {
+			for (int i = 0; i < gridRows; i++){
+				for (int j = 0; j < gridCols; j++){
+					if(treeMap[i][j] == FIRE){
+						dead(treeMap, i, j);
+						spread(treeMap, i, j);
 					}
 
-					if (below) {
-						if  (i != gridRows - 1 && treeMap[i + 1][j] == TREE) {
-							treeMap[i + 1][j] = FIRE;
-						}
+					if (treeMap[i][j] == TREE) {
+						setBGColor(i,j,treeColor);// sets bg to green
+						drawSymbol(i,j, treeSymbol, NamedColor::black);
 					}
-					
-					if (left) {
-						if  (j != 0 && treeMap[i][j - 1]) {
-							treeMap[i][j - 1] = FIRE;
-						}
+					else if (treeMap[i][j] == FIRE) {
+						setBGColor(i,j, fireColor);// bg to red
+						drawSymbol(i,j, fireSymbol, NamedColor::black);
 					}
-					
-					if (right) {
-						if  (j != gridCols - 1 && treeMap[i][j + 1]) {
-							treeMap[i][j + 1] = FIRE;
-						}
+					else {
+						setBGColor(i,j, emptyColor);// bg to yellow
+						drawSymbol(i,j, emptySymbol, NamedColor::black);
 					}
-					// Turns the original FIRE to EMPTY
-					treeMap[i][j] = EMPTY;
 				}
 			}
 		}
-
-	for (int i = 0; i < gridRows; i++){
-		for (int j = 0; j < gridCols; j++){
-			if (treeMap[i][j] == TREE){
-				setBGColor(i,j,treeColor);// sets bg to green
-				drawSymbol(i,j, fireSymbol, NamedColor::black);
-			} else{
-				setBGColor(i,j, emptyColor);// bg to red
-				drawSymbol(i,j, emptySymbol, NamedColor::black);
-			}
-		}
 	}
-}
 };
 
 int main(int argc, char** argv) {
