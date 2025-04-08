@@ -147,12 +147,16 @@ struct SpreadingFire : public NonBlockingGame {
 					setBGColor(i,j, emptyColor);// bg to yellow
 					drawSymbol(i,j, emptySymbol, NamedColor::black);
 				}
+			}
+		}
+		for (int i = 0; i < gridRows; i++){
+			for (int j = 0; j < gridCols; j++){
 				spread(i, j);
 			}
 		}
-		if (same(treeMap,newTreeMap)) exit(0);
-		else copy(treeMap, newTreeMap);
-
+//		if (same(treeMap,newTreeMap)) exit(0);
+//		else copy(treeMap, newTreeMap);
+		copy(treeMap, newTreeMap);
 
 		/*
 		   while(!same(newTreeMap, treeMap)) {
