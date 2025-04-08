@@ -15,7 +15,7 @@ OBJS = $(SRCS:.cpp=.o)
 CXXFLAGS = -g  -std=c++14 $(BRIDGES_CXXFLAGS)
 
 LDFLAGS = -g $(BRIDGES_LDFLAGS) -pthread
-LIBS =  -lcurl -l bridges 
+LIBS =  -lcurl -lbridges 
 
 $(EXE): $(OBJS)
 	$(CXX) -o $(EXE) $(OBJS) $(LDFLAGS) $(LIBS)
