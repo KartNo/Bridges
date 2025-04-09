@@ -44,7 +44,7 @@ struct SpreadingFire : public NonBlockingGame {
 
 	bool burn() {	//Chance of tree catching fire
 		int luck = rand() % 100;
-		if (luck < 100) return true;
+		if (luck < 65) return true;
 		else return false;
 	}
 
@@ -149,14 +149,13 @@ struct SpreadingFire : public NonBlockingGame {
 				}
 			}
 		}
-		for (int i = 0; i < gridRows; i++){
-			for (int j = 0; j < gridCols; j++){
-				spread(i, j);
+		for (int a = 0; a < gridRows; a++){
+			for (int b = 0; b < gridCols; b++){
+				spread(a, b);
 			}
 		}
-//		if (same(treeMap,newTreeMap)) exit(0);
-//		else copy(treeMap, newTreeMap);
-		copy(treeMap, newTreeMap);
+		if (!same(treeMap,newTreeMap)) copy(treeMap,newTreeMap);
+//		else exit(0);
 
 		/*
 		   while(!same(newTreeMap, treeMap)) {
